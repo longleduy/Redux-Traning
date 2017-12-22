@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-
+import {connect} from 'react-redux';
+import {viewAddForm} from '../actions/index';
 class Filter extends Component {
     constructor(props) {
         super(props);
     }
     addNew = () => {
-        this.props.addNew(null, null, null);
-    }
-    generate = () => {
-        this.props.generate();
+        this.props.viewAddDiv();
     }
     search = (e) => {
         var searchValue = e.target.value;
@@ -53,4 +51,11 @@ class Filter extends Component {
     }
 
 }
-export { Filter };
+const mapDispatcherToProps = (dispatch,props) => {
+    return {
+        viewAddDiv : () => {
+            dispatch(viewAddForm());
+        }
+    }
+}
+export default connect(null,mapDispatcherToProps)(Filter);

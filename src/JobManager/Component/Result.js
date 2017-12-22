@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-
+import {connect} from 'react-redux';
+import {delEmployee,changeLevel} from '../actions/index';
 class Result extends Component {
     constructor(props) {
         super(props);
 
     }
-    updateLvl = (e)=>{
-        this.props.updateLvl(e);
+    updateLvl = (id_emp)=>{
+        this.props.onChangeLevel(id_emp);
     }
     edit = (idx,name,lvl)=>{
-        this.props.edit(idx,name,(lvl == true?"1":"2"));
+        ;
     }
     del = (idx_del)=>{
-        this.props.del(idx_del);
+        if(confirm("Are you sure?") == true){
+            this.props.onDelEmployee(idx_del);
+        }
+        else{
+            return false;
+        }
     }
     render() {
         return (
@@ -35,17 +41,16 @@ class Result extends Component {
                                         <td>{k+1}</td>
                                         <td>{list.name}</td>
                                         <td>
-                                            <input type="button" className={list.level===true?"btn-level-size btn btn-level":"btn-level-size btn btn-default"} 
+                                            <input type="button" 
+                                                className={list.level===true?"btn-level-size btn btn-level":"btn-level-size btn btn-default"} 
                                                 value={list.level===true?"Admin":"Member"} onClick={()=>this.updateLvl(list.id)} />
                                         </td>
                                         <td>
                                             <button type="button" className="btn btn-success flatButton"
-                                                name="btnEdit" ref="btnEdit" onClick={()=>this.edit(k,list.name,list.level)}
-                                                >Edit
+                                                    name="btnEdit" ref="btnEdit" onClick={()=>this.edit(k,list.name,list.level)}>Edit
                                             </button>&nbsp;
                                             <button type="button" className="btn btn-danger flatButton"
-                                                name="btnDel" ref="btnDel" onClick={()=>this.del(list.id)}
-                                                >Delete
+                                                    name="btnDel" ref="btnDel" onClick={()=>this.del(list.id)}>Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -60,4 +65,19 @@ class Result extends Component {
     }
 
 }
-export { Result };
+const mapStateToProps = (state) => {
+    return {
+        listEmp : state.listEmp
+    }
+}
+const mapDispatchToProps = (dispatch,props) => {
+    return {
+        onDelEmployee : (id_emp) => {
+            dispatch(delEmployee(id_emp))
+        },
+        onChangeLevel : (id_emp) => {
+            dispatch(changeLevel(id_emp))
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Result);

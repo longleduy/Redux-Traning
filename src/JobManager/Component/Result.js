@@ -31,10 +31,10 @@ class Result extends Component {
         let filterByKeyWord = (list,keyWord) => {
             let listEmployee = list.filter((employee) => {
                 if(keyWord.level !== 0){
-                    return ((employee.name.toLowerCase().indexOf(keyWord.fullName) != -1) && (employee.level == keyWord.level));
+                    return ((employee.name.toLowerCase().indexOf(keyWord.fullName.toLowerCase()) != -1) && (employee.level == keyWord.level));
                 }
                 else{
-                    return (employee.name.toLowerCase().indexOf(keyWord.fullName) != -1);
+                    return (employee.name.toLowerCase().indexOf(keyWord.fullName.toLowerCase()) != -1);
                 }
             })
             return listEmployee;
@@ -43,7 +43,6 @@ class Result extends Component {
         let {view} = this.props.viewDivState;
         let {listEmp} = this.props;
         let listFilter = filterByKeyWord(listEmp,keyWord);
-        console.log(keyWord);
         return (
             <div>
                 <div className={view == true?"col-xs-8 col-sm-8 col-md-8 col-lg-8":"col-xs-12 col-sm-12 col-md-12 col-lg-12"}>

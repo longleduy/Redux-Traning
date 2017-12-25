@@ -20,6 +20,7 @@ class Filter extends Component {
     }
     render() {
         let viewStatus = this.props.viewDivState;
+        let {level} = this.props.keyWord;
         return (
             <div>
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -47,8 +48,8 @@ class Filter extends Component {
                             <select name="sltLevel" className=" divSelect" ref="sltLevel" 
                                     onChange={this.handleChange}>
                                 <option value={0}>--View All--</option>
-                                <option value={true}>Admin</option>
-                                <option value={false}>Member</option>
+                                <option  value={true} >Admin</option>
+                                <option value={false} >Member</option>
                             </select>
                         </div>
                     </div>
@@ -59,7 +60,8 @@ class Filter extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        viewDivState : state.formStatus.view
+        viewDivState : state.formStatus.view,
+        keyWord : state.keyWord
     }
 };
 const mapDispatcherToProps = (dispatch,props) => {

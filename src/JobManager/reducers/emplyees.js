@@ -1,7 +1,7 @@
 import { LIST_ALL,  
          SAVE_EMPLOYEE, 
          DEL_EMPLOYEE,
-         CHANGE_LEVEL } from '../constants/ActionTypes';
+         CHANGE_LEVEL} from '../constants/ActionTypes';
 var listSession = JSON.parse(localStorage.getItem('listEmp'));
 var listEmp = listSession ? listSession : [{
     id: "1",
@@ -28,6 +28,11 @@ let findIdx = (empList, id_employee) => {
         return employee.id == id_employee;
     })
 }
+var filterEmployee = (listEmployee,keyWord) => {
+    return filterList = listEmployee.filter((employee) => {
+        return employee.name.indexOf(keyWord) != -1;
+    })
+}
 let randomId = () => {
   return  Math.random().toString().substring(2, 5) + 
           '-' + Math.random().toString(36).substring(2, 5) +
@@ -38,6 +43,7 @@ const myReducer = (state = listEmp, action) => {
     switch (action.type) {
         case LIST_ALL:
             return state;
+        //TODO: Save employee
         case SAVE_EMPLOYEE:
             let newEmp = {
                 id: (action.personInfo.id == '0'?randomId():action.personInfo.id),
@@ -53,11 +59,13 @@ const myReducer = (state = listEmp, action) => {
             }
             localStorage.setItem('listEmp', JSON.stringify(state));
             return [...state];
+        //TODO: Delete employee
         case DEL_EMPLOYEE:
             var idx = findIdx(state, action.id_emp);
             state.splice(idx, 1);
             localStorage.setItem("listEmp", JSON.stringify(state));
             return [...state];
+        //TODO: Change lvl employee
         case CHANGE_LEVEL :
             var idx = findIdx(state, action.id_emp);
             //state[idx].level = !state[idx].level;
@@ -66,7 +74,7 @@ const myReducer = (state = listEmp, action) => {
                 level : !state[idx].level
             };
             localStorage.setItem('listEmp',JSON.stringify(state));
-            return [...state]
+            return [...state];
         default:
             return state;
     }

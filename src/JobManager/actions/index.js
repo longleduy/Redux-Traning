@@ -3,7 +3,8 @@ import {LIST_ALL,
         VIEW_ADDNEW_FORM,
         DEL_EMPLOYEE,
         CHANGE_LEVEL,
-        RESET_PERSON_INFO} from '../constants/ActionTypes';
+        RESET_PERSON_INFO,
+        FILTER_EMPLOYEE} from '../constants/ActionTypes';
 
 export const listAll = () => {
     type : LIST_ALL
@@ -35,5 +36,11 @@ export const changeLevel = (id_emp) => {
 export const resetPersoninfo = () => {
     return {
         type : RESET_PERSON_INFO
+    }
+}
+export const filterEmployee = (keyWord) => {
+    return {
+        type : FILTER_EMPLOYEE,
+        keyWord
     }
 }

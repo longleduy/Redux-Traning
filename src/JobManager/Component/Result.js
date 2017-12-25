@@ -28,7 +28,22 @@ class Result extends Component {
         }
     }
     render() {
+        let filterByKeyWord = (list,keyWord) => {
+            let listEmployee = list.filter((employee) => {
+                if(keyWord.level !== 0){
+                    return ((employee.name.toLowerCase().indexOf(keyWord.fullName) != -1) && (employee.level == keyWord.level));
+                }
+                else{
+                    return (employee.name.toLowerCase().indexOf(keyWord.fullName) != -1);
+                }
+            })
+            return listEmployee;
+        };
+        let {keyWord} = this.props;
         let {view} = this.props.viewDivState;
+        let {listEmp} = this.props;
+        let listFilter = filterByKeyWord(listEmp,keyWord);
+        console.log(keyWord);
         return (
             <div>
                 <div className={view == true?"col-xs-8 col-sm-8 col-md-8 col-lg-8":"col-xs-12 col-sm-12 col-md-12 col-lg-12"}>
@@ -43,7 +58,7 @@ class Result extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.listEmp.map((list, k) => {
+                            {listFilter.map((list, k) => {
                                 return (
                                     <tr key={k}>
                                         <td>{k+1}</td>
@@ -80,7 +95,8 @@ class Result extends Component {
 const mapStateToProps = (state) => {
     return {
         listEmp : state.listEmp,
-        viewDivState : state.formStatus
+        viewDivState : state.formStatus,
+        keyWord : state.keyWord
     }
 }
 const mapDispatchToProps = (dispatch,props) => {

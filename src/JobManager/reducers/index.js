@@ -4,7 +4,7 @@ import formStatus from './formControl';
 
 var myReducer = combineReducers({
     listEmp,
-    formStatus
+    formStatus,
 
 });
 export default myReducer;

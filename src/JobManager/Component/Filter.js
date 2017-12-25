@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {viewAddForm} from '../actions/index';
+import {VIEW_ADDNEW_FORM} from '../constants/ActionTypes'
 class Filter extends Component {
     constructor(props) {
         super(props);
     }
     addNew = () => {
-        this.props.viewAddDiv();
-    }
-    search = (e) => {
-        var searchValue = e.target.value;
-        this.props.search(searchValue);
+        this.props.viewAddDiv(VIEW_ADDNEW_FORM);
     }
     render() {
+        let viewStatus = this.props.viewDivState;
         return (
             <div>
                 <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -20,22 +18,21 @@ class Filter extends Component {
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
                         <div>
                             <button type="button" className="btn btn-success flatButton"
-                                name="btnAddnew" ref="btnAddnew"
-                                onClick={this.addNew}>Add a new job
+                                    name="btnAddnew" ref="btnAddnew"
+                                    style={viewStatus == true?{display:'none'}:{display:'inline'}}
+                                    onClick={this.addNew}>Add a new job
                             </button>&nbsp;
                         </div>
                     </div>
-
                     <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9" >
                         <div className="divSearch">
-                            <input type="text" className="txtSearch" placeholder="type something here............" 
-                                    name="txtSearch" ref="txtSearch" onChange = { this.search }
-                                    />
+                            <input type="text" className="txtSearch" 
+                                    placeholder="type something here............" 
+                                    name="txtSearch" ref="txtSearch" 
+                                    onChange = { this.search }/>
                             <button className="btnSearch">Search</button>
-
                         </div>
                     </div>
-
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" >
                         <div className="">
                             <select name="sltAction" className=" divSelect">
@@ -49,13 +46,17 @@ class Filter extends Component {
             </div>
         )
     }
-
 }
+const mapStateToProps = (state) => {
+    return {
+        viewDivState : state.formStatus.view
+    }
+};
 const mapDispatcherToProps = (dispatch,props) => {
     return {
-        viewAddDiv : () => {
-            dispatch(viewAddForm());
+        viewAddDiv : (type) => {
+            dispatch(viewAddForm(type));
         }
     }
 }
-export default connect(null,mapDispatcherToProps)(Filter);
+ export default connect(mapStateToProps,mapDispatcherToProps)(Filter);

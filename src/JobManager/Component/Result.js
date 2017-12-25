@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {delEmployee,changeLevel} from '../actions/index';
+import {delEmployee,changeLevel,viewAddForm} from '../actions/index';
+import {EDIT_EMPLOYEE} from '../constants/ActionTypes';
 class Result extends Component {
     constructor(props) {
         super(props);
@@ -9,8 +10,14 @@ class Result extends Component {
     updateLvl = (id_emp)=>{
         this.props.onChangeLevel(id_emp);
     }
-    edit = (idx,name,lvl)=>{
-        ;
+    edit = (id,name,lvl)=>{
+        let personInfo = {
+            view : true,
+            id: id,
+            txtFullname : name,
+            sltAction : lvl
+        }
+        this.props.viewAddDiv(EDIT_EMPLOYEE,personInfo);
     }
     del = (idx_del)=>{
         if(confirm("Are you sure?") == true){
@@ -21,9 +28,10 @@ class Result extends Component {
         }
     }
     render() {
+        let {view} = this.props.viewDivState;
         return (
             <div>
-                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div className={view == true?"col-xs-8 col-sm-8 col-md-8 col-lg-8":"col-xs-12 col-sm-12 col-md-12 col-lg-12"}>
 
                     <table className="table table-hover">
                         <thead>
@@ -43,14 +51,18 @@ class Result extends Component {
                                         <td>
                                             <input type="button" 
                                                 className={list.level===true?"btn-level-size btn btn-level":"btn-level-size btn btn-default"} 
-                                                value={list.level===true?"Admin":"Member"} onClick={()=>this.updateLvl(list.id)} />
+                                                value={list.level===true?"Admin":"Member"} 
+                                                onClick={()=>this.updateLvl(list.id)} />
                                         </td>
                                         <td>
                                             <button type="button" className="btn btn-success flatButton"
-                                                    name="btnEdit" ref="btnEdit" onClick={()=>this.edit(k,list.name,list.level)}>Edit
+                                                    name="btnEdit" ref="btnEdit" 
+                                                    onClick={()=>this.edit(list.id,list.name,list.level)}
+                                                    style={{borderColor:'black'}}>Edit
                                             </button>&nbsp;
-                                            <button type="button" className="btn btn-danger flatButton"
-                                                    name="btnDel" ref="btnDel" onClick={()=>this.del(list.id)}>Delete
+                                            <button type="button" className="btn btn-danger flatButton" 
+                                                    name="btnDel" ref="btnDel" 
+                                                    onClick={()=>this.del(list.id)}>Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -67,7 +79,8 @@ class Result extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        listEmp : state.listEmp
+        listEmp : state.listEmp,
+        viewDivState : state.formStatus
     }
 }
 const mapDispatchToProps = (dispatch,props) => {
@@ -77,6 +90,9 @@ const mapDispatchToProps = (dispatch,props) => {
         },
         onChangeLevel : (id_emp) => {
             dispatch(changeLevel(id_emp))
+        },
+        viewAddDiv : (type,personInfo) => {
+            dispatch(viewAddForm(type,personInfo));
         }
     }
 }

@@ -1,0 +1,4 @@
+                                        React controlled component và uncontrolled component
+
+* Controlled components là các dữ liệu trong form đều được React quản lí thường dưới dạng state hoặc store.
+* Uncontrolled components thì khác, dữ liệu được lấy trực tiếp từ DOM
